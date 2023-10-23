@@ -1,4 +1,4 @@
-import { Canvas, Circle, Group } from "@shopify/react-native-skia";
+import { Canvas, Circle, Group, Path, Skia } from "@shopify/react-native-skia";
 import { area, scaleLinear } from "d3";
 
 type Props = {
@@ -22,10 +22,9 @@ export const LiquidGaugeProgress = ({ size, value }: Props) => {
     .range([relativeWaveHeight, relativeWaveHeight])
     .domain([0, 100]);
 
-  const waveCout = 1;
-  // TODO: review wave clip count
-  const waveClipCount = 2;
-  const waveLength = (fillCircleRadius * 2) / waveClipCount;
+  const waveCount = 1;
+  const waveClipCount = waveCount + 1;
+  const waveLength = (fillCircleRadius * 2) / waveCount;
   const waveClipWidth = waveLength * waveClipCount;
   const waveHeight = fillCircleRadius * waveHeightScale(fillPercent * 100);
 
@@ -44,17 +43,21 @@ export const LiquidGaugeProgress = ({ size, value }: Props) => {
     })
     .y0(function (d) {
       return waveScaleY(
-        Math.sin(
-          Math.PI * 2 * mergedConfig.waveOffset * -1 +
-            Math.PI * 2 * (1 - waveCount) +
-            d[1] * 2 * Math.PI,
-        ),
+        Math.sin(Math.PI * 2 * (1 - waveCount) + d[1] * 2 * Math.PI),
       );
     })
     .y1(function (_d) {
       return fillCircleRadius * 2 + waveHeight * 5;
     });
-  // console.log(data);
+
+  const clipSvgPath = clipArea(data);
+  const clipPath = Skia.Path.MakeFromSVGString(clipSvgPath);
+  const transformMatrix = Skia.Matrix();
+  transformMatrix.translate(
+    0,
+    fillCircleMargin + (1 - fillPercent) * fillCircleRadius * 2,
+  );
+  clipPath.transform(transformMatrix);
 
   return (
     <Canvas style={{ width: size, height: size }}>
@@ -67,7 +70,7 @@ export const LiquidGaugeProgress = ({ size, value }: Props) => {
         strokeWidth={circleThickness}
       />
 
-      <Group>
+      <Group clip={clipPath}>
         <Circle cx={radius} cy={radius} r={fillCircleRadius} color="#178BCA" />
       </Group>
     </Canvas>
