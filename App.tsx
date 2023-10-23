@@ -1,13 +1,12 @@
 import { StatusBar } from "expo-status-bar";
 import { Text, View, StyleSheet } from "react-native";
+import { LiquidGaugeProgress } from "./src/LiquidGaugeProgress";
 
 export default function App() {
   return (
     <View style={styles.container}>
       <StatusBar style="auto" />
-      <Text style={styles.text}>
-        Open up App.tsx to start working on your app!
-      </Text>
+      <LiquidGaugeProgress size={200} value={55} />
     </View>
   );
 }
