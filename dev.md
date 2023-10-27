@@ -160,6 +160,59 @@ export const LiquidGaugeProgress = ({ size, value }: Props) => {
 
 <!-- TODO: add image for each step -->
 
+Now when we have clip area let's add some text. Skia text component require font. So let's download [roboto bold](https://fonts.google.com/specimen/Roboto) font. And put it into assets/fonts directory.
+
+```typescript
+import { useFont, Text } from "@shopify/react-native-skia";
+
+// ...
+
+const fontSize = radius / 2; // font size is half of the radius
+const font = useFont(require('../assets/fonts/Roboto-Regular.ttf'), fontSize); // create font with font file and size
+
+const text = `${value}`; // convert value to string
+const textWidth = font?.getTextWidth(text) ?? 0; // get text width
+const textTranslateX = radius - textWidth * 0.5; // calculate text X position to center it horizontally
+const textTransform = [{ translateY: size * 0.5 - fontSize * 0.7 }]; // calculate vertical center position. Half canvas size - half font size. But since characters isn't centered inside font rect we do 0.7 instead of 0.5.
+
+// ... 
+
+return (
+    <Canvas style={{ width: size, height: size }}>
+      <Circle
+        {/* ... */}
+      />
+
+      {/* Text which will be drawn above the wave (water) */}
+      <Text
+        x={textTranslateX}
+        y={fontSize}
+        text={text}
+        font={font}
+        color="#045681"
+        transform={textTransform}
+      />
+
+      {/* clip everything inside this group with clip path */}
+      <Group clip={clipPath}>
+        <Circle cx={radius} cy={radius} r={fillCircleRadius} color="#178BCA" />
+
+        {/* Text which will be drawn under the wave (water) */}
+        <Text
+          x={textTranslateX}
+          y={fontSize}
+          text={text}
+          font={font}
+          color="#A4DBf8"
+          transform={textTransform}
+        />
+      </Group>
+    </Canvas>
+  );
+```
+
+So we added font and calculated text posiotion (explained in the code comments). Then we added two Text components. One reder above the water wave, and another - under the water wave. What give us nice effect that text is in the water. 
+
 
 
 

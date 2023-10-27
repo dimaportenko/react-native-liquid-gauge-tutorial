@@ -6,7 +6,7 @@ export default function App() {
   return (
     <View style={styles.container}>
       <StatusBar style="auto" />
-      <LiquidGaugeProgress size={200} value={55} />
+      <LiquidGaugeProgress size={200} value={45} />
     </View>
   );
 }
