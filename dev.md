@@ -211,7 +211,7 @@ return (
   );
 ```
 
-So we added font and calculated text posiotion (explained in the code comments). Then we added two Text components. One reder above the water wave, and another - under the water wave. What give us nice effect that text is in the water. 
+So we added font and calculated text posiotion (explained in the code comments). Then we added two Text components with same params but different colors. One reder above the water wave, and another - under the water wave. What give us nice effect that text is in the water. 
 
 
 
