@@ -1,3 +1,12 @@
+import { area, scaleLinear } from "d3";
+import { useEffect } from "react";
+import Animated, {
+  Easing,
+  useDerivedValue,
+  useSharedValue,
+  withRepeat,
+  withTiming,
+} from "react-native-reanimated";
 import {
   Canvas,
   Circle,
@@ -7,7 +16,6 @@ import {
   Text,
   useFont,
 } from "@shopify/react-native-skia";
-import { area, scaleLinear } from "d3";
 
 type Props = {
   size: number;
@@ -68,13 +76,29 @@ export const LiquidGaugeProgress = ({ size, value }: Props) => {
     });
 
   const clipSvgPath = clipArea(data); // convert data points as wave area and output as svg path string
-  const clipPath = Skia.Path.MakeFromSVGString(clipSvgPath); // convert svg path string to skia format path
-  const transformMatrix = Skia.Matrix(); // create Skia tranform matrix
-  transformMatrix.translate(
-    0, // translate x to 0, basically do nothing
-    fillCircleMargin + (1 - fillPercent) * fillCircleRadius * 2 - waveHeight, // translate y to position where lower point of the wave in the innerCircleHeight * fillPercent
-  );
-  clipPath.transform(transformMatrix); // apply transform matrix to our clip path
+
+  const translateXAnimated = useSharedValue(0);
+  useEffect(() => {
+    translateXAnimated.value = withRepeat(
+      withTiming(1, {
+        duration: 9000,
+        easing: Easing.linear,
+      }),
+      -1,
+    );
+  }, []);
+
+  const clipPath = useDerivedValue(() => {
+    const clipP = Skia.Path.MakeFromSVGString(clipSvgPath); // convert svg path string to skia format path
+    const transformMatrix = Skia.Matrix(); // create Skia tranform matrix
+    transformMatrix.translate(
+      0, //waveLength * translateXAnimated.value, // translate x to 0, basically do nothing
+      fillCircleMargin + (1 - fillPercent) * fillCircleRadius * 2 - waveHeight, // translate y to position where lower point of the wave in the innerCircleHeight * fillPercent
+    );
+    clipP.transform(transformMatrix); // apply transform matrix to our clip path
+    return clipP;
+  }, [translateXAnimated]);
+  // const clipPath = clipP;
 
   return (
     <Canvas style={{ width: size, height: size }}>

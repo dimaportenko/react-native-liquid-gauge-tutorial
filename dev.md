@@ -213,7 +213,7 @@ return (
 
 So we added font and calculated text posiotion (explained in the code comments). Then we added two Text components with same params but different colors. One reder above the water wave, and another - under the water wave. What give us nice effect that text is in the water. 
 
-
+Now we want to animated our wave. So let's install [react-native-reanimated](https://docs.swmansion.com/react-native-reanimated/docs/fundamentals/getting-started/#installation). Simply follow official documentation [reanimated installation](https://docs.swmansion.com/react-native-reanimated/docs/fundamentals/getting-started/#installation) or for [expo installation](https://docs.expo.dev/versions/latest/sdk/reanimated/#installation). 
 
 
 
