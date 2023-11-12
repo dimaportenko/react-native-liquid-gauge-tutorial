@@ -233,7 +233,7 @@ import {
       // repeat animation
       withTiming(1, {
         // animate from 0 to 1
-        duration: 9000, // anmation duration
+        duration: 9000, // animation duration
         easing: Easing.linear, // easing function
       }),
       -1, // repeat forever
@@ -253,7 +253,26 @@ import {
   }, [translateXAnimated]);
 ```
 
+We can do same to animate Y translation. 
 
+```typescript
+  const translateYPercent = useSharedValue(0); // animated value translate wave vertically
+
+  useEffect(() => {
+    translateYPercent.value = withTiming(fillPercent, { // timing animation from 0 to `fillPercent`
+      duration: 1000, // animation duration
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [fillPercent]);
+
+
+  // update transformMatrix like this
+  transformMatrix.translate(
+    fillCircleMargin - waveLength * translateXAnimated.value, // translate left from start of the first wave to the length of first wave
+    fillCircleMargin + (1 - translateYPercent.value) * fillCircleRadius * 2 - waveHeight, // translate y to position where lower point of the wave in the innerCircleHeight * fillPercent
+    // since Y axis 0 is in the top, we do animation from 1 to (1 - fillPercent)
+  );
+```
 
 
 
