@@ -43,8 +43,8 @@ export const LiquidGaugeProgress = ({ size, value }: Props) => {
   const fontSize = radius / 2; // font size is half of the radius
   const font = useFont(require("../assets/fonts/Roboto-Bold.ttf"), fontSize); // create font with font file and size
 
-  const text = `${value}`; // convert value to string
-  const textWidth = font?.getTextWidth(text) ?? 0; // get text width
+  // const text = `${value}`; // convert value to string
+  const textWidth = font?.getTextWidth(`${value}`) ?? 0; // get text width
   const textTranslateX = radius - textWidth * 0.5; // calculate text X position to center it horizontally
   const textTransform = [{ translateY: size * 0.5 - fontSize * 0.7 }]; // calculate vertical center position. Half canvas size - half font size. But since characters isn't centered inside font rect we do 0.7 instead of 0.5.
 
@@ -79,9 +79,22 @@ export const LiquidGaugeProgress = ({ size, value }: Props) => {
 
   const translateXAnimated = useSharedValue(0); // animated value translate wave horizontally
   const translateYPercent = useSharedValue(0); // animated value translate wave vertically
+  const textValue = useSharedValue(0); // animated value for text
 
   useEffect(() => {
-    translateYPercent.value = withTiming(fillPercent, { // timing animation from 0 to `fillPercent`
+    textValue.value = withTiming(value, { // animate from 0 to `value`
+      duration: 1000, // duration of animation
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [value]);
+
+  const text = useDerivedValue(() => { // derived value for the Text component
+    return `${textValue.value.toFixed(0)}`; // convert to string 
+  }, [textValue]);
+
+  useEffect(() => {
+    translateYPercent.value = withTiming(fillPercent, {
+      // timing animation from 0 to `fillPercent`
       duration: 1000, // animation duration
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -105,7 +118,9 @@ export const LiquidGaugeProgress = ({ size, value }: Props) => {
     const transformMatrix = Skia.Matrix(); // create Skia tranform matrix
     transformMatrix.translate(
       fillCircleMargin - waveLength * translateXAnimated.value, // translate left from start of the first wave to the length of first wave
-      fillCircleMargin + (1 - translateYPercent.value) * fillCircleRadius * 2 - waveHeight, // translate y to position where lower point of the wave in the innerCircleHeight * fillPercent
+      fillCircleMargin +
+        (1 - translateYPercent.value) * fillCircleRadius * 2 -
+        waveHeight, // translate y to position where lower point of the wave in the innerCircleHeight * fillPercent
       // since Y axis 0 is in the top, we do animation from 1 to (1 - fillPercent)
     );
     clipP.transform(transformMatrix); // apply transform matrix to our clip path

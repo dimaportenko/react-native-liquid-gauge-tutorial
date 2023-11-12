@@ -274,5 +274,21 @@ We can do same to animate Y translation.
   );
 ```
 
+And last thing is to animate text value.
+```typescript
+  const textValue = useSharedValue(0); // animated value for text
+
+  useEffect(() => {
+    textValue.value = withTiming(value, { // animate from 0 to `value`
+      duration: 1000, // duration of animation
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [value]);
+
+  const text = useDerivedValue(() => { // derived value for the Text component
+    return `${textValue.value.toFixed(0)}`; // convert to string 
+  }, [textValue]);
+```
+
 
 
