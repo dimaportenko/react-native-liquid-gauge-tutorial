@@ -35,6 +35,11 @@ export const LiquidGaugeProgress = ({ size }: Props) => {
 }; 
 ```
 
+<div style="">
+    <img src="docs/pic1.jpg" width="200" />
+</div>
+
+
 Render everything inside the Canvas with width and height of size. Draw Circle which fits canvas size. We will use `stroke` style to draw only border of the circle. We will use `strokeWidth` to set thickness of the border. 
 
 Now let's add inner circle which will represent water wave later with clip path.
@@ -61,6 +66,10 @@ Now let's add inner circle which will represent water wave later with clip path.
     </Canvas>
   );
 ```
+
+<div style="">
+    <img src="docs/pic2.jpg" width="200" />
+</div>
 
 <!-- TODO: add image for each step -->
 
@@ -158,6 +167,9 @@ export const LiquidGaugeProgress = ({ size, value }: Props) => {
 
 ```
 
+<div style="">
+    <img src="docs/pic3.jpg" width="200" />
+</div>
 <!-- TODO: add image for each step -->
 
 Now when we have clip area let's add some text. Skia text component require font. So let's download [roboto bold](https://fonts.google.com/specimen/Roboto) font. And put it into assets/fonts directory.
@@ -210,6 +222,9 @@ return (
     </Canvas>
   );
 ```
+<div style="">
+    <img src="docs/pic4.jpg" width="200" />
+</div>
 
 So we added font and calculated text posiotion (explained in the code comments). Then we added two Text components with same params but different colors. One reder above the water wave, and another - under the water wave. What give us nice effect that text is in the water. 
 
@@ -253,6 +268,10 @@ import {
   }, [translateXAnimated]);
 ```
 
+<div style="">
+    <img src="docs/demo2.gif" width="200" />
+</div>
+
 We can do same to animate Y translation. 
 
 ```typescript
@@ -274,6 +293,10 @@ We can do same to animate Y translation.
   );
 ```
 
+<div style="">
+    <img src="docs/demo3.gif" width="200" />
+</div>
+
 And last thing is to animate text value.
 ```typescript
   const textValue = useSharedValue(0); // animated value for text
@@ -290,5 +313,8 @@ And last thing is to animate text value.
   }, [textValue]);
 ```
 
+<div style="">
+    <img src="docs/demo4.gif" width="200" />
+</div>
 
 
