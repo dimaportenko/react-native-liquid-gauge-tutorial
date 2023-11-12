@@ -215,7 +215,43 @@ So we added font and calculated text posiotion (explained in the code comments).
 
 Now we want to animated our wave. So let's install [react-native-reanimated](https://docs.swmansion.com/react-native-reanimated/docs/fundamentals/getting-started/#installation). Simply follow official documentation [reanimated installation](https://docs.swmansion.com/react-native-reanimated/docs/fundamentals/getting-started/#installation) or for [expo installation](https://docs.expo.dev/versions/latest/sdk/reanimated/#installation). 
 
+Now we create `translateXAnimated` which change from 0 to 1 over 9 seconds and repeat in infinity loop. Then we wrap our `clipPath` value in `useDerivedValue` where we apply our `translateXAnimated` to x position of clip path. Each line has extra comment. Don't hesitate to ask the question if you need additional explanation. 
+```typescript
+import {
+  Easing,
+  useDerivedValue,
+  useSharedValue,
+  withRepeat,
+  withTiming,
+} from "react-native-reanimated";
 
+// ...
+
+  const translateXAnimated = useSharedValue(0); // animated value translate wave horizontally
+  useEffect(() => {
+    translateXAnimated.value = withRepeat(
+      // repeat animation
+      withTiming(1, {
+        // animate from 0 to 1
+        duration: 9000, // anmation duration
+        easing: Easing.linear, // easing function
+      }),
+      -1, // repeat forever
+    );
+  }, []);
+
+  const clipPath = useDerivedValue(() => {
+    // animated value for clip wave path
+    const clipP = Skia.Path.MakeFromSVGString(clipSvgPath); // convert svg path string to skia format path
+    const transformMatrix = Skia.Matrix(); // create Skia tranform matrix
+    transformMatrix.translate(
+      fillCircleMargin - waveLength * translateXAnimated.value, // translate left from start of the first wave to the length of first wave
+      fillCircleMargin + (1 - fillPercent) * fillCircleRadius * 2 - waveHeight, // translate y to position where lower point of the wave in the innerCircleHeight * fillPercent
+    );
+    clipP.transform(transformMatrix); // apply transform matrix to our clip path
+    return clipP;
+  }, [translateXAnimated]);
+```
 
 
 

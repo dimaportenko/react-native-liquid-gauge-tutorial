@@ -1,6 +1,6 @@
 import { area, scaleLinear } from "d3";
 import { useEffect } from "react";
-import Animated, {
+import {
   Easing,
   useDerivedValue,
   useSharedValue,
@@ -77,22 +77,25 @@ export const LiquidGaugeProgress = ({ size, value }: Props) => {
 
   const clipSvgPath = clipArea(data); // convert data points as wave area and output as svg path string
 
-  const translateXAnimated = useSharedValue(0);
+  const translateXAnimated = useSharedValue(0); // animated value translate wave horizontally
   useEffect(() => {
     translateXAnimated.value = withRepeat(
+      // repeat animation
       withTiming(1, {
-        duration: 9000,
-        easing: Easing.linear,
+        // animate from 0 to 1
+        duration: 9000, // anmation duration
+        easing: Easing.linear, // easing function
       }),
-      -1,
+      -1, // repeat forever
     );
   }, []);
 
   const clipPath = useDerivedValue(() => {
+    // animated value for clip wave path
     const clipP = Skia.Path.MakeFromSVGString(clipSvgPath); // convert svg path string to skia format path
     const transformMatrix = Skia.Matrix(); // create Skia tranform matrix
     transformMatrix.translate(
-      0, //waveLength * translateXAnimated.value, // translate x to 0, basically do nothing
+      fillCircleMargin - waveLength * translateXAnimated.value, // translate left from start of the first wave to the length of first wave
       fillCircleMargin + (1 - fillPercent) * fillCircleRadius * 2 - waveHeight, // translate y to position where lower point of the wave in the innerCircleHeight * fillPercent
     );
     clipP.transform(transformMatrix); // apply transform matrix to our clip path
