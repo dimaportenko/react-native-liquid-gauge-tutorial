@@ -317,4 +317,4 @@ And last thing is to animate text value.
     <img src="docs/demo4.gif" width="200" />
 </div>
 
-
+Hooray! We did it. This is basically all in terms of tutorial scope. If you like to have ready to use configurable component take a look [react-native-gauge-pprogress](https://github.com/dimaportenko/react-native-liquid-gauge) a wrap it as a simple lib. 
