@@ -1,4 +1,28 @@
-# react-native-liquid-gauge-tutorial
+# React Native Liquid Gauge Tutorial
+
+<div>
+  <a align="center" href="https://github.com/dimaportenko?tab=followers">
+    <img src="https://img.shields.io/github/followers/dimaportenko?label=Follow%20%40dimaportenko&style=social" />
+  </a>
+  <br/>
+  <a align="center" href="https://twitter.com/dimaportenko">
+    <img src="https://img.shields.io/twitter/follow/dimaportenko?label=Follow%20%40dimaportenko&style=social" />
+  </a>
+  <br/>
+  <a align="center" href="https://www.youtube.com/channel/UCReKeeIMZywvQoaZPZKzQbQ">
+    <img src="https://img.shields.io/youtube/channel/subscribers/UCReKeeIMZywvQoaZPZKzQbQ" />
+  </a>
+  <br/>
+  <a align="center" href="https://www.youtube.com/channel/UCReKeeIMZywvQoaZPZKzQbQ">
+    <img src="https://img.shields.io/youtube/channel/views/UCReKeeIMZywvQoaZPZKzQbQ" />
+  </a>
+   <br/>
+  <a align="center" href="https://www.twitch.tv/lost_semicolon">
+    <img src="https://img.shields.io/twitch/status/lost_semicolon?style=social" />
+  </a>
+</div>
+<br/>
+
 <!-- Intro for tutorial for liquid gauge progress indicator for react native, with react-native-skia and react-native-reanimated -->
 Some time ago I saw this cool [Liquid Fill Gauge Gist](https://gist.github.com/brattonc/5e5ce9beee483220e2f6) with cool animated web svg component. Immediatly I thought it would be cool to have it in react native. It took me some effort to make it works. So I decided to make a tutorial for it. I will use [react-native-skia](https://shopify.github.io/react-native-skia/) and [react-native-reanimated](https://docs.swmansion.com/react-native-reanimated/).
 
